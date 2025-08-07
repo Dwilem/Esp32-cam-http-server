@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const serverPort = 42101; // Use 8080 (or any free port)
+const serverPort = 8080; // Use 8080 (or any free port)
 const streamDirectory = './stream';
 const streamFilename = 'stream.jpg';
 
@@ -201,4 +201,5 @@ if (!fs.existsSync(streamDirectory)) {
 // Listen on all interfaces (important!)
 server.listen(serverPort, '0.0.0.0', () => {
   console.log(`Server running at http://0.0.0.0:${serverPort}`);
+
 });
