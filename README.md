@@ -30,10 +30,10 @@ It works across different networks, supports authentication, and lets you contro
    npm install
    ```
 4. **Modify script according to your needs**
-   ```bash
-   Change server.js login credentials, server port. In Esp32Camera.ino add server ip, port, login credentials, wifi...
+   
+   Change ```server.js``` login credentials, server port. In ```Esp32Camera.ino``` add server ip, port, login credentials, wifi...
    If you want to use server publicly don't forget to portforward
-   ```
+   
 
 5. **Run the server**
    ```bash
