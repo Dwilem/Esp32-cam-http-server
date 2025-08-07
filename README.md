@@ -39,7 +39,7 @@ It works across different networks, supports authentication, and lets you contro
    ```
    
 6. **Run arduino ide script**
-   bash
+   
    Upload ```Esp32Camera.ino``` code into arduino 
 
 7. **Access in browser**
