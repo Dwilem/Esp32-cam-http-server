@@ -5,21 +5,18 @@
 
 
 // Replace with your network credentials
-const char* ssid     = "VR_House2"; // CHANGE HERE
-const char* password = "antisKaubojus"; // CHANGE HERE
-
-// Server details
-//const char* serverAddress = "88.222.169.91";
-//const int serverPort = 42101; // Change port if needed
+const char* ssid     = "****"; // CHANGE HERE
+const char* password = "****"; // CHANGE HERE
 
 // Server endpoint (change IP/domain and port if needed)
-const char* serverURL = "http://88.222.169.91:42101";  // Must match server's /upload endpoint
+const char* serverURL = "192.168.***.***:8080/upload";  // CHANGE YOUR SERVER IP + PORT + "/upload"
+// Use porforwarding if you want to use this publicly 
 
-#define uS_TO_S_FACTOR 1000000ULL  // Conversion factor for micro seconds to seconds
-#define TIME_TO_SLEEP  20           // Time ESP32 will go to sleep (in seconds)
-#define FailedConnectionsBeforeSleep 10
+#define uS_TO_S_FACTOR 1000000ULL   // Conversion factor for micro seconds to seconds
+#define TIME_TO_SLEEP  20             // Time ESP32 will go to sleep (in seconds)
+#define FailedConnectionsBeforeSleep 10 // How many times esp32 try logging to server before going into deep sleep
 
-String credentials = "admin:admin123";
+String credentials = "admin:admin123";  // CHANGE YOUR LOGIN CREDIANTIALS HERE
 String encoded = base64::encode(credentials);
 
 
@@ -88,47 +85,9 @@ void loop()
       return;
     }
 
-
-    //    http.begin("http://88.222.169.91:42101/status");
-    //    http.addHeader("Authorization", "Basic " + encoded);
-    //
-    //    int code = http.GET();
-    //    Serial.println(code);
-    //
-    //    if (code == 200)
-    //    {
-    //      //Connected to server
-    //      failedConnectionsToServer = 0;
-    //
-    //      String response = http.getString();
-    //      if (response.indexOf("\"streaming\":true") < 0)
-    //      {
-    //        Serial.println("Streaming is disabled by server");
-    //        failedConnectionsToServer = 0;
-    //        http.end();
-    //        esp_camera_fb_return(fb);
-    //        ("Entering deep sleep for" + String(TIME_TO_SLEEP) + "seconds");
-    //        esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-    //        esp_deep_sleep_start();
-    //      }
-    //    }
-    //    else
-    //    {
-    //      failedConnectionsToServer++;
-    //      if (failedConnectionsToServer == FailedConnectionsBeforeSleep)
-    //      {
-    //        http.end();
-    //        esp_camera_fb_return(fb);
-    //        Serial.println("Entering deep sleep for" + String(TIME_TO_SLEEP) + "seconds");
-    //        esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-    //        esp_deep_sleep_start();
-    //
-    //      }
-    //    }
-
     HTTPClient http;
 
-    http.begin("http://88.222.169.91:42101/upload");
+    http.begin(serverURL);
 
     http.addHeader("Authorization", "Basic " + encoded);
     http.addHeader("Content-Type", "image/jpeg");
@@ -141,8 +100,7 @@ void loop()
       //Stop stream
       if (httpResponseCode == 201)
       {
-       
-        
+
             Serial.println("Streaming is disabled by server");
             Serial.println("Entering deep sleep for" + String(TIME_TO_SLEEP) + "seconds");
             http.end();
@@ -190,5 +148,5 @@ void loop()
       WiFi.begin(ssid, password);
     }
 
-    //delay(1000); // Capture interval (1 second)
+    //delay(1000); // optional delay for upluading photos
   }
