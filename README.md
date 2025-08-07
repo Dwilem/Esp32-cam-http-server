@@ -14,8 +14,6 @@ It works across different networks, supports authentication, and lets you contro
 
 ## ⚙️ Setup
 
-### Server (Node.js)
-
 1. **Install Node.js**  
    https://nodejs.org/
 
@@ -35,12 +33,15 @@ It works across different networks, supports authentication, and lets you contro
    If you want to use server publicly don't forget to portforward
    
 
-5. **Run the server**
+5. **Run the server **
    ```bash
    node server.js
    ```
+   
+6. **Run arduino ide script**
+   Upload ```Esp32Camera.ino``` code into arduino 
 
-6. **Access in browser**
+7. **Access in browser**
    Visit: `http://<your-server-ip>:42101`  
    Login using the username/password set in `server.js`.
 
