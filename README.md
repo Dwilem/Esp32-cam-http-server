@@ -73,17 +73,6 @@ It works across different networks, supports authentication, and lets you contro
 
 ---
 
-## 📦 Directory Structure
-
-```
-esp32-cam-remote-stream/
-├── server.js         # Node.js server
-├── stream/           # Temporary image storage
-└── README.md / SUMMARY.md
-```
-
----
-
 ## 📜 License
 
 MIT License – free to use, modify, and share.
