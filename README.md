@@ -43,7 +43,7 @@ It works across different networks, supports authentication, and lets you contro
    Upload ```Esp32Camera.ino``` code into arduino 
 
 7. **Access in browser**
-   Visit: `http://<your-server-ip>:42101`  
+   Visit: `http://<your-server-ip>:<port>`  
    Login using the username/password set in `server.js`.
 
 
