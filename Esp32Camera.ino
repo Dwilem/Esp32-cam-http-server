@@ -9,17 +9,19 @@ const char* ssid     = "****"; // CHANGE HERE
 const char* password = "****"; // CHANGE HERE
 
 // Server endpoint (change IP/domain and port if needed)
-const char* serverURL = "192.168.***.***:8080/upload";  // CHANGE YOUR SERVER IP + PORT + "/upload"
+const char* serverURL = "http://192.168.*.*/upload";  // CHANGE YOUR SERVER IP + PORT + "/upload"
 // Use porforwarding if you want to use this publicly 
 
 #define uS_TO_S_FACTOR 1000000ULL   // Conversion factor for micro seconds to seconds
-#define TIME_TO_SLEEP  20             // Time ESP32 will go to sleep (in seconds)
+#define TIME_TO_SLEEP  30             // Time ESP32 will go to sleep (in seconds)
 #define FailedConnectionsBeforeSleep 10 // How many times esp32 try logging to server before going into deep sleep
 
-String credentials = "admin:admin123";  // CHANGE YOUR LOGIN CREDIANTIALS HERE
-String encoded = base64::encode(credentials);
 
+String username = "espuser";  // CHANGE YOUR LOGIN USER
+String Userpass = "esppass";   // CHANGE YOUR LOGIN PASSWORD
 
+String auth = String(username) + ":" + String(Userpass);
+String encoded = base64::encode(auth);
 
 // Camera pin configuration for AI Thinker ESP32-CAM
 camera_config_t config = {
@@ -69,8 +71,6 @@ void setup() {
     while (true);
   }
   Serial.println("Camera initialized.");
-
-  
   failedConnectionsToServer = 0;
 }
 
@@ -86,24 +86,19 @@ void loop()
     }
 
     HTTPClient http;
-
     http.begin(serverURL);
-
     http.addHeader("Authorization", "Basic " + encoded);
     http.addHeader("Content-Type", "image/jpeg");
-
-
     int httpResponseCode = http.POST(fb->buf, fb->len);
-
+    http.end();
     if (httpResponseCode != 200)
     {
       //Stop stream
       if (httpResponseCode == 201)
       {
-
             Serial.println("Streaming is disabled by server");
             Serial.println("Entering deep sleep for" + String(TIME_TO_SLEEP) + "seconds");
-            http.end();
+           
             esp_camera_fb_return(fb);
             esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
             esp_deep_sleep_start();
@@ -115,7 +110,6 @@ void loop()
       {
         Serial.println("Failed to connect to server");
         Serial.println("Entering deep sleep for" + String(TIME_TO_SLEEP) + "seconds");
-        http.end();
         esp_camera_fb_return(fb);
         esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
         esp_deep_sleep_start();
@@ -125,9 +119,6 @@ void loop()
     {
       failedConnectionsToServer = 0;
     }
-
-
-
       if (httpResponseCode > 0)
       {
         Serial.printf("Image sent successfully, server response: % d\n", httpResponseCode);
@@ -135,12 +126,10 @@ void loop()
       else
       {
         Serial.printf("Failed to send image. Error: % s\n", http.errorToString(httpResponseCode).c_str());
+        Serial.println(httpResponseCode);
       }
-
-
       http.end();
       esp_camera_fb_return(fb);
-
     }
     else
     {
