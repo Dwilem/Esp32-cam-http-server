@@ -19,7 +19,7 @@ It works across different networks, supports authentication, and lets you contro
 
 2. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/esp32-cam-remote-stream.git
+   git clone https://github.com/Dwilem/Esp32-cam-http-server.git
    cd esp32-cam-remote-stream
    ```
 
@@ -32,17 +32,22 @@ It works across different networks, supports authentication, and lets you contro
    Change ```server.js``` login credentials, server port. In ```Esp32Camera.ino``` add server ip, port, login credentials, wifi...
    If you want to use server publicly don't forget to portforward
    
+5. **Generate certificate and a key**
+   ```bash
+   mkdir cert
+   openssl req -nodes -new -x509 -keyout cert/key.pem -out cert/cert.pem
+   ```
 
-5. **Run the server **
+6. **Run the server**
    ```bash
    node server.js
    ```
    
-6. **Run arduino ide script**
+7. **Run arduino ide script**
    
-   Upload ```Esp32Camera.ino``` code into arduino 
+   Upload ```Esp32Camera.ino``` code into arduino
 
-7. **Access in browser**
+8. **Access in browser**
    Visit: `http://<your-server-ip>:<port>`  
    Login using the username/password set in `server.js`.
 
@@ -51,7 +56,7 @@ It works across different networks, supports authentication, and lets you contro
 
 ## 🔐 Authentication
 
-- HTTP Basic Auth required for browser access
+- HTTPS Basic Auth required for browser access
 - Credentials set in `server.js`
 - Login prompt appears on every session (no caching)
 
@@ -59,10 +64,8 @@ It works across different networks, supports authentication, and lets you contro
 
 ## 🔁 Update Possibilities
 
-- MJPEG stream or WebSocket for smoother video
 - Add image recording or cloud sync
 - Support multiple cameras/devices
-- Use HTTPS (TLS) for secure access
 - Mobile-friendly interface
 
 ---
